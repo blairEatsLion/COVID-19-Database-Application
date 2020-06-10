@@ -1,5 +1,5 @@
 # COVID-19-Database-Application
-A database application to keep track of information and processing data efficiently.                                                      
+A database application to keep track of patient/drug information and processing data efficiently.                                                      
 
 contacts.sql: SQL query to find the name, email and phone number of all the persons who have come in contact with the patient whose email id is ___________.
 
