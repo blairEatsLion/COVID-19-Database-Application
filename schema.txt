@@ -1,0 +1,84 @@
+-- constraints can not be captured: every ‘Person_focused’ should take the test
+
+
+CREATE TABLE Borough(
+bname varchar(20) NOT NULL UNIQUE,
+        population int         NOT NULL,
+PRIMARY KEY(bname)
+);
+
+
+CREATE TABLE Person_focused(
+pid int                NOT NULL UNIQUE,
+        name char(20)        NOT NULL,
+phone char(15),
+        email varchar(50),
+        address varchar(100),
+        age int,
+        bname varchar(20),
+        PRIMARY KEY(pid),
+FOREIGN KEY(bname) REFERENCES Borough(bname)
+);
+
+
+CREATE TABLE contacted(
+        pidA int        NOT NULL,
+        pidB int        NOT NULL,
+FOREIGN KEY(pidA) REFERENCES Person_focused(pid),
+FOREIGN KEY(pidB) REFERENCES Person_focused(pid),
+        PRIMARY KEY(pidA,pidB)
+);
+
+
+CREATE TABLE Test(
+pid int                NOT NULL UNIQUE,
+tid int                NOT NULL UNIQUE,
+result char(12)        NOT NULL,
+        date DATE                  NOT NULL,
+PRIMARY KEY(pid,tid),
+FOREIGN KEY(pid) REFERENCES Person_focused(pid)
+);
+
+
+CREATE TABLE Patient(
+        status char(12)        NOT NULL,
+        pid int        NOT NULL UNIQUE REFERENCES Person_focused(pid),
+        PRIMARY KEY(pid)
+);
+
+
+CREATE TABLE Professional(
+hid int        NOT NULL UNIQUE,
+name_prof char(20)        NOT NULL,
+        phone char(15)        NOT NULL,
+designation char(10)        NOT NULL,
+PRIMARY KEY(hid)
+);
+
+
+CREATE TABLE observe(
+date DATE        NOT NULL,
+time TIME        NOT NULL,
+text varchar(150),
+pid int        NOT NULL REFERENCES Patient(pid),
+        hid int        NOT NULL REFERENCES Professional(hid),
+        PRIMARY KEY(pid,hid,date,time)
+);
+
+
+CREATE TABLE Drug(
+        dname varchar(30)        NOT NULL UNIQUE,
+        code char(7)        NOT NULL UNIQUE,
+PRIMARY KEY(dname)
+);
+
+
+CREATE TABLE administer(
+        dosage int        NOT NULL,
+date DATE        NOT NULL,
+time TIME        NOT NULL,
+pid int        NOT NULL REFERENCES Patient(pid),
+hid int        NOT NULL REFERENCES Professional(hid),
+dname varchar(30)        NOT NULL REFERENCES Drug(dname),
+PRIMARY KEY(pid,hid,dname)
+);
